@@ -2,6 +2,7 @@ import React, { createContext, useState } from "react";
 
 interface User {
   email: string;
+  password: string;
 }
 
 interface AuthContextType {
@@ -28,7 +29,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const signIn = (email: string, password: string) => {
     if (email === "eduardo@email.com" && password === "123456") {
-      setUser({ email });
+      setUser({ email, password });
       setSigned(true);
     }
   };

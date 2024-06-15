@@ -1,8 +1,9 @@
 import { useState, FormEvent, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { Container, Content, Title, Form, InputWrapper, Input, Button } from "./styles";
 import { AuthContext } from "../../context/AuthContext";
+import { signInSchema } from "../../validation/authValidation";
+import * as Yup from "yup";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -11,19 +12,20 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = (event: FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!email.trim() || !password.trim()) {
-      setError("Por favor, preencha todos os campos.");
-      return;
-    }
-
     try {
-      signIn(email, password);
+      await signInSchema.validate({ email, password }, { abortEarly: false });
+
+      await signIn(email, password);
       navigate('/home');
-    } catch (error) {
-      setError("Credenciais inválidas. Verifique seu email e senha.");
+    } catch (validationError) {
+      if (validationError instanceof Yup.ValidationError) {
+        setError(validationError.errors.join('\n'));
+      } else {
+        setError("Credenciais inválidas. Verifique seu email e senha.");
+      }
     }
   };
 
