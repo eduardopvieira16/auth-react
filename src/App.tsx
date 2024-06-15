@@ -1,10 +1,7 @@
-import React from "react";
-import AppRouter from "./routes/AppRouter";
-import SignIn from "./pages/SignIn";
-import Home from "./pages/Home";
+import AuthRoutes from "./routes/AuthRoutes";
 
-const App: React.FC = () => {
-  return <Home />;
+const App = () => {
+  return <AuthRoutes />;
 };
 
 export default App;

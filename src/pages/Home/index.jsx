@@ -1,8 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import { Container, Content, Title, Button } from "./styles";
 
 const Home = () => {
+  const navigate = useNavigate();
+
   const handleLogout = () => {
-    console.log('handleLogin')
+    navigate('/')
   };
 
   return (

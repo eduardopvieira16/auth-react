@@ -1,46 +1,41 @@
-import React, { createContext, useContext, useState } from 'react';
+import { createContext, useState, ReactNode } from "react";
 
 interface User {
   email: string;
-  password: string;
 }
 
 interface AuthContextType {
-  isLoggedIn: boolean;
-  login: (email: string, password: string) => void;
-  logout: () => void;
+  user: User | null;
+  signed: boolean;
+  signin: (email: string) => void;
+  signout: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+interface AuthProviderProps {
+  children: ReactNode;
+}
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const user: User = {
-    email: "eduardo@email.com",
-    password: "123456"
+export const AuthContext = createContext<AuthContextType>({
+  user: null,
+  signed: false,
+  signin: () => {},
+  signout: () => {},
+});
+
+export const AuthProvider = ({ children }: AuthProviderProps) => {
+  const [user, setUser] = useState<User | null>(null);
+
+  const signin = (email: string): void => {
+    setUser({ email });
   };
 
-  const login = (email: string, password: string) => {
-    if (email === user.email && password === user.password) {
-      setIsLoggedIn(true);
-    }
-  };
-
-  const logout = () => {
-    setIsLoggedIn(false);
+  const signout = (): void => {
+    setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ user, signed: !!user, signin, signout }}>
       {children}
     </AuthContext.Provider>
   );
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
 };

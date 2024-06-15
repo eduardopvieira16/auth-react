@@ -1,8 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import { Container, Content, Title, Form, InputWrapper, Input, Button } from "./styles";
 
 const SignIn = () => {
+  const navigate = useNavigate();
+  
   const handleLogin = () => {
-    console.log('handleLogin')
+    navigate('/home');
   };
 
   return (
