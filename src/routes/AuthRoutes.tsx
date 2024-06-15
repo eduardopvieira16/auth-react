@@ -4,7 +4,9 @@ import Home from "../pages/Home";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
-const PrivateRoute: React.FC<{ element: React.ReactElement }> = ({ element }) => {
+const PrivateRoute: React.FC<{ element: React.ReactElement }> = ({
+  element,
+}) => {
   const { signed } = useContext(AuthContext);
   return signed ? element : <Navigate to="/" replace />;
 };

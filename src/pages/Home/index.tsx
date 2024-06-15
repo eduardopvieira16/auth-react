@@ -9,7 +9,7 @@ const Home = () => {
 
   const handleSignOut = () => {
     signOut();
-    navigate('/');
+    navigate("/");
   };
 
   return (

@@ -1,9 +1,15 @@
 import { useState, FormEvent, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Content, Title, Form, InputWrapper, Input, Button } from "./styles";
+import {
+  Container,
+  Content,
+  Title,
+  Form,
+  InputWrapper,
+  Input,
+  Button,
+} from "./styles";
 import { AuthContext } from "../../context/AuthContext";
-import { signInSchema } from "../../validation/authValidation";
-import * as Yup from "yup";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -16,15 +22,13 @@ const SignIn = () => {
     event.preventDefault();
 
     try {
-      await signInSchema.validate({ email, password }, { abortEarly: false });
-
       await signIn(email, password);
-      navigate('/home');
-    } catch (validationError) {
-      if (validationError instanceof Yup.ValidationError) {
-        setError(validationError.errors.join('\n'));
+      navigate("/home");
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
       } else {
-        setError("Credenciais inválidas. Verifique seu email e senha.");
+        setError("Ocorreu um erro inesperado.");
       }
     }
   };
