@@ -1,4 +1,4 @@
-import { createContext, useState, ReactNode } from "react";
+import React, { createContext, useState } from "react";
 
 interface User {
   email: string;
@@ -7,34 +7,39 @@ interface User {
 interface AuthContextType {
   user: User | null;
   signed: boolean;
-  signin: (email: string) => void;
-  signout: () => void;
+  signIn: (email: string, password: string) => void;
+  signOut: () => void;
 }
 
 interface AuthProviderProps {
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   signed: false,
-  signin: () => {},
-  signout: () => {},
+  signIn: () => {},
+  signOut: () => {},
 });
 
-export const AuthProvider = ({ children }: AuthProviderProps) => {
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [signed, setSigned] = useState<boolean>(false);
 
-  const signin = (email: string): void => {
-    setUser({ email });
+  const signIn = (email: string, password: string) => {
+    if (email === "eduardo@email.com" && password === "123456") {
+      setUser({ email });
+      setSigned(true);
+    }
   };
 
-  const signout = (): void => {
+  const signOut = () => {
     setUser(null);
+    setSigned(false);
   };
 
   return (
-    <AuthContext.Provider value={{ user, signed: !!user, signin, signout }}>
+    <AuthContext.Provider value={{ user, signed: !!user, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
