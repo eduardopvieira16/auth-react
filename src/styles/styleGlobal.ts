@@ -44,7 +44,7 @@ const GlobalStyle = createGlobalStyle`
     font: 700 1rem 'Harmattan', sans-serif;
   }
 
-  button a {
+  button, a {
     cursor: pointer;
   }
 

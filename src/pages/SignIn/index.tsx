@@ -1,7 +1,14 @@
 import { useState, FormEvent, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { Container, Content, Title, Form, InputWrapper, Input, Button } from "./styles";
+import {
+  Container,
+  Content,
+  Title,
+  Form,
+  InputWrapper,
+  Input,
+  Button,
+} from "./styles";
 import { AuthContext } from "../../context/AuthContext";
 
 const SignIn = () => {
@@ -11,19 +18,18 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = (event: FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!email.trim() || !password.trim()) {
-      setError("Por favor, preencha todos os campos.");
-      return;
-    }
-
     try {
-      signIn(email, password);
-      navigate('/home');
-    } catch (error) {
-      setError("Credenciais inválidas. Verifique seu email e senha.");
+      await signIn(email, password);
+      navigate("/home");
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Ocorreu um erro inesperado.");
+      }
     }
   };
 
