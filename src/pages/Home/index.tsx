@@ -1,23 +1,22 @@
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
-import { Button, Container, Content, Title } from "./styles";
+import { Container, Content, Title, Button } from "./styles";
+import { useAuth } from "../../context/AuthContext";
 
 const Home = () => {
   const navigate = useNavigate();
-  const { signOut } = useContext(AuthContext);
+  const { signOut } = useAuth();
 
   const handleSignOut = () => {
     signOut();
-    navigate("/");
+    navigate("/", { replace: true });
   };
 
   return (
     <Container>
       <Content>
-        <Title>Authentication Success!</Title>
+        <Title>Welcome Back!</Title>
         <Button type="button" onClick={handleSignOut}>
-          Sair
+          Sign Out
         </Button>
       </Content>
     </Container>

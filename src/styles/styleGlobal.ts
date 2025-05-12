@@ -18,6 +18,7 @@ const GlobalStyle = createGlobalStyle`
 
   html, body, #root {
     height: 100%;
+    font-family: 'Harmattan', sans-serif;
   }
 
   body {
@@ -27,7 +28,6 @@ const GlobalStyle = createGlobalStyle`
     flex-direction: column;
   }
 
-  /* Responsividade de tela */
   @media (max-width: 1080px) {
     html {
       font-size: 93.75%;
@@ -40,17 +40,18 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
-  body, input, textarea, button {
-    font: 700 1rem 'Harmattan', sans-serif;
-  }
-
   button, a {
     cursor: pointer;
+    font: 700 1rem 'Harmattan', sans-serif;
   }
 
   a {
     color: inherit;
     text-decoration: none;
+  }
+
+  input, textarea {
+    font: 400 1rem 'Harmattan', sans-serif;
   }
 `;
 

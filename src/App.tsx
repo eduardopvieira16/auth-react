@@ -1,12 +1,12 @@
-import AuthRoutes from "./routes/AuthRoutes";
 import { AuthProvider } from "./context/AuthContext";
+import AuthRoutes from "./routes/AuthRoutes";
+import GlobalStyle from "./styles/styleGlobal";
 
-const App = () => {
-  return (
-    <AuthProvider>
-      <AuthRoutes />
-    </AuthProvider>
-  );
-};
+const App = () => (
+  <AuthProvider>
+    <GlobalStyle />
+    <AuthRoutes />
+  </AuthProvider>
+);
 
 export default App;

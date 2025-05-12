@@ -1,5 +1,6 @@
-import { useState, FormEvent, useContext } from "react";
+import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import {
   Container,
   Content,
@@ -8,60 +9,59 @@ import {
   InputWrapper,
   Input,
   Button,
+  ErrorMessage,
 } from "./styles";
-import { AuthContext } from "../../context/AuthContext";
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const { signIn } = useContext(AuthContext);
+  const { signIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setError("");
+    setIsLoading(true);
 
     try {
       await signIn(email, password);
-      navigate("/home");
+      navigate("/home", { replace: true });
     } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("Ocorreu um erro inesperado.");
-      }
+      setError(err instanceof Error ? err.message : "An unexpected error occurred");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <Container>
       <Content>
-        <div>
-          <Title>Faça seu login</Title>
-        </div>
-        <Form onSubmit={handleLogin}>
+        <Title>Sign In</Title>
+        <Form onSubmit={handleSubmit}>
           <InputWrapper>
             <Input
-              name="email"
               type="email"
-              required
-              placeholder="Digite seu email"
+              placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </InputWrapper>
           <InputWrapper>
             <Input
-              name="password"
               type="password"
-              required
-              placeholder="Digite sua senha"
+              placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </InputWrapper>
-          <Button type="submit">Entrar</Button>
-          {error && <p>{error}</p>}
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? "Signing In..." : "Sign In"}
+          </Button>
+          {error && <ErrorMessage>{error}</ErrorMessage>}
         </Form>
       </Content>
     </Container>
